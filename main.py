@@ -17,7 +17,9 @@ define("port", default=8000, type=int)
 class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
-            (r"/", servers.IndexHandle)
+            (r"/", servers.IndexHandler),
+            (r"/server/", servers.IndexHandler),
+            (r"/server/add/", servers.AddHandler),
         ]
         self.config = config
         settings = {

@@ -1,89 +1,5 @@
-<!DOCTYPE html>
-<html lang="zh-cn">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>服务器管理系统 - 搜狐焦点</title>
-
-        <!-- Bootstrap -->
-        <link rel="stylesheet" href="{{ static_url('css/bootstrap.min.css') }}">
-
-        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-          <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-          <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
-        
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
-        <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="{{ static_url('js/bootstrap.min.js') }}"></script>
-        <style>
-            .navbar-brand{padding:0px 5px;}
-            .page-header h1{font-size:30px;}
-            li{display: block;}
-        </style>
-    </head>
-    <body>
-        <nav class="navbar navbar-default" role="navigation">
-            <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                  </button>
-                  <a class="navbar-brand" href="#" ><img alt="Brand" src="/static/img/logo.png"/></a>
-                </div>
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">服务器列表</a></li>
-                        <li><a href="#">业务管理</a></li>
-                        <li><a href="#">服务管理</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">其他工具 <span class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">用户管理</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">机房管理</a></li>
-                                <li><a href="#">运营商管理</a></li>
-                          </ul>
-                        </li>
-                    </ul>
-					<form class="navbar-form navbar-left" role="search">
-						<div class="input-group">
-							<input type="text" class="form-control">
-							<div class="input-group-btn">
-							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">名称 <span class="caret"></span></button>
-							<ul class="dropdown-menu dropdown-menu-right" role="menu">
-								{% for s_key,s_name in search_param.iteritems() %}
-                                <li><a href="#" data-value="{{s_key}}">{{s_name}}</a></li>
-                                {% end %}
-							</ul>
-						  </div><!-- /btn-group -->
-						</div>
-						<button type="submit" class="btn btn-default">Search</button>
-					</form>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#">龙念同学</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">操作 <span class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">修改密码</a></li>
-                                <li><a href="#">我的资料</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">系统通知</a></li>
-                          </ul>
-                        </li>
-                    </ul>
-                </div><!-- /.navbar-collapse -->
-          </div><!-- /.container-fluid -->
-        </nav>
+{% include header.html %}
+    {% include nav.html %}
         <div class="page-header">
           <h1>服务器列表 <small>Server List</small></h1>
         </div>
@@ -95,8 +11,9 @@
                      <th class="dropdown" data-value="{{item.get('key')}}">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{item.get('name')}} <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
+                            <li><a href="/">全部</a></li>
                             {% for k,v in list_choose.get(item['key']).iteritems() %}
-                            <li><a href="{{k}}">{{v}}</a></li>
+                            <li><a href="/?{{item['key']}}={{k}}">{{v}}</a></li>
                             {% end %}
                         </ul>
                      </th>
@@ -104,12 +21,15 @@
                         <th data-value="{{item.get('key')}}">{{item.get('name')}}</th>
                     {% end %}
                  {% end %}
-
               </tr>
            </thead>
            <tbody>
            {% for item in lists %}
+            {% if item.status == 2 %}
+              <tr class="warning">
+            {% else %}
               <tr>
+            {% end %}
                  <td>{{item.id}}</td>
                  <td>{{item.name}}</td>
                  <td>{{item.ip_addr}}</td>
@@ -117,196 +37,37 @@
                  <td>{% if list_choose.get("idc") and list_choose["idc"].get(item.idc_id) %}{{list_choose["idc"][item.idc_id]}}{% else %}-{% end %}</td>
                  <td>{% if list_choose.get("environment") and list_choose["environment"].get(item.environment) %}{{list_choose["environment"][item.environment]}}{% else %}-{% end %}</td>
                  <td>{% if list_choose.get("business") and list_choose["business"].get(item.business_id) %}{{list_choose["business"][item.business_id]}}{% else %}-{% end %}</td>
-
-                 <td>{{item.application_id}}</td>
+                 <td>{% if list_choose.get("application") and list_choose["application"].get(item.application_id) %}{{list_choose["application"][item.application_id]}}{% else %}-{% end %}</td>
                  <td>{{item.cluster}}</td>
-                 <td>{{item.role}}</td>
+                 <td>{% if list_choose.get("role") and list_choose["role"].get(item.role) %}{{list_choose["role"][item.role]}}{% else %}-{% end %}</td>
                  <td>{{item.head_name}}</td>
-                 <th>{{item.status}}</th>
-                 <td>删除 | 修改</td>
+                 <td>{% if list_choose.get("status") and list_choose["status"].get(item.status) %}{{list_choose["status"][item.status]}}{% else %}-{% end %}</td>
+                 <td><a href="/server/remove/?id={{item.id}}">删除</a> | <a href="/server/info/?id={{item.id}}">修改</a></td>
               </tr>
            {% end %}
-              <tr>
-                 <td>1</td>
-                 <td>web-CN--APACHE-1</td>
-                 <td>10.10.25.200</td>
-                 <td>中国电信</td>
-                 <td>兆维</td>
-                 <td>开发</td>
-                 <td>论坛</td>
-                 <td>nginx前端</td>
-                 <td>WEB</td>
-                 <td>TEST</td>
-                 <td>龙念</td>
-                 <th>运行中</th>
-                 <td>删除 | 修改</td>
-              </tr>
-              <tr>
-                 <td>1</td>
-                 <td>web-CN--APACHE-1</td>
-                 <td>10.10.25.200</td>
-                 <td>中国电信</td>
-                 <td>兆维</td>
-                 <td>开发</td>
-                 <td>论坛</td>
-                 <td>nginx前端</td>
-                 <td>WEB</td>
-                 <td>TEST</td>
-                 <td>龙念</td>
-                 <th>运行中</th>
-                 <td>删除 | 修改</td>
-              </tr>
-              <tr>
-                 <td>1</td>
-                 <td>web-CN--APACHE-1</td>
-                 <td>10.10.25.200</td>
-                 <td>中国电信</td>
-                 <td>兆维</td>
-                 <td>开发</td>
-                 <td>论坛</td>
-                 <td>nginx前端</td>
-                 <td>WEB</td>
-                 <td>TEST</td>
-                 <td>龙念</td>
-                 <th>运行中</th>
-                 <td>删除 | 修改</td>
-              </tr>
-              <tr>
-                 <td>1</td>
-                 <td>web-CN--APACHE-1</td>
-                 <td>10.10.25.200</td>
-                 <td>中国电信</td>
-                 <td>兆维</td>
-                 <td>开发</td>
-                 <td>论坛</td>
-                 <td>nginx前端</td>
-                 <td>WEB</td>
-                 <td>TEST</td>
-                 <td>龙念</td>
-                 <th>运行中</th>
-                 <td>删除 | 修改</td>
-              </tr>
-              <tr>
-                 <td>1</td>
-                 <td>web-CN--APACHE-1</td>
-                 <td>10.10.25.200</td>
-                 <td>中国电信</td>
-                 <td>兆维</td>
-                 <td>开发</td>
-                 <td>论坛</td>
-                 <td>nginx前端</td>
-                 <td>WEB</td>
-                 <td>TEST</td>
-                 <td>龙念</td>
-                 <th>运行中</th>
-                 <td>删除 | 修改</td>
-              </tr>
-              <tr>
-                 <td>1</td>
-                 <td>web-CN--APACHE-1</td>
-                 <td>10.10.25.200</td>
-                 <td>中国电信</td>
-                 <td>兆维</td>
-                 <td>开发</td>
-                 <td>论坛</td>
-                 <td>nginx前端</td>
-                 <td>WEB</td>
-                 <td>TEST</td>
-                 <td>龙念</td>
-                 <th>运行中</th>
-                 <td>删除 | 修改</td>
-              </tr>
-              <tr>
-                 <td>1</td>
-                 <td>web-CN--APACHE-1</td>
-                 <td>10.10.25.200</td>
-                 <td>中国电信</td>
-                 <td>兆维</td>
-                 <td>开发</td>
-                 <td>论坛</td>
-                 <td>nginx前端</td>
-                 <td>WEB</td>
-                 <td>TEST</td>
-                 <td>龙念</td>
-                 <th>运行中</th>
-                 <td>删除 | 修改</td>
-              </tr>
-              <tr>
-                 <td>1</td>
-                 <td>web-CN--APACHE-1</td>
-                 <td>10.10.25.200</td>
-                 <td>中国电信</td>
-                 <td>兆维</td>
-                 <td>开发</td>
-                 <td>论坛</td>
-                 <td>nginx前端</td>
-                 <td>WEB</td>
-                 <td>TEST</td>
-                 <td>龙念</td>
-                 <th>运行中</th>
-                 <td>删除 | 修改</td>
-              </tr>
-              <tr>
-                 <td>1</td>
-                 <td>web-CN--APACHE-1</td>
-                 <td>10.10.25.200</td>
-                 <td>中国电信</td>
-                 <td>兆维</td>
-                 <td>开发</td>
-                 <td>论坛</td>
-                 <td>nginx前端</td>
-                 <td>WEB</td>
-                 <td>TEST</td>
-                 <td>龙念</td>
-                 <th>运行中</th>
-                 <td>删除 | 修改</td>
-              </tr>
-              <tr>
-                 <td>1</td>
-                 <td>web-CN--APACHE-1</td>
-                 <td>10.10.25.200</td>
-                 <td>中国电信</td>
-                 <td>兆维</td>
-                 <td>开发</td>
-                 <td>论坛</td>
-                 <td>nginx前端</td>
-                 <td>WEB</td>
-                 <td>TEST</td>
-                 <td>龙念</td>
-                 <th>运行中</th>
-                 <td>删除 | 修改</td>
-              </tr>
-              <tr>
-                 <td>1</td>
-                 <td>web-CN--APACHE-1</td>
-                 <td>10.10.25.200</td>
-                 <td>中国电信</td>
-                 <td>兆维</td>
-                 <td>开发</td>
-                 <td>论坛</td>
-                 <td>nginx前端</td>
-                 <td>WEB</td>
-                 <td>TEST</td>
-                 <td>龙念</td>
-                 <th>运行中</th>
-                 <td>删除 | 修改</td>
-              </tr>
            </tbody>
         </table>
-        
-
+        {% if pages %}
         <nav>
-  <ul class="pagination">
-    <li><a href="#">&laquo;</a></li>
-    <li class="active"><a href="#">1</a></li>
-    <li><a href="#">2</a></li>
-    <li><a href="#">3</a></li>
-    <li><a href="#">4</a></li>
-    <li><a href="#">5</a></li>
-    <li><a href="#">&raquo;</a></li>
-  </ul>
-</nav>
-
-
-    </body>
-</html>
+          <ul class="pagination">
+            {% if pages["page_num"] > 1 %}
+                <li><a href="/?{% if search_query %}{{search_query}}&{% end %}page={{pages['page_num'] - 1}}">&laquo;</a></li>
+              {% else %}
+                <li class="disabled"><a href="javascript:;">&laquo;</a></li>
+            {% end %}
+            {% for i in range(1, pages['total_page']+1) %}
+                {% if i == pages["page_num"] %}
+                <li class="active"><a href="/?{% if search_query %}{{search_query}}&{% end %}page={{i}}">{{i}}</a></li>
+                {% else %}
+                <li><a href="/?{% if search_query %}{{search_query}}&{% end %}page={{i}}">{{i}}</a></li>
+                {% end %}
+            {% end %}
+            {% if pages["page_num"] < pages["total_page"] %}
+                <li><a href="/?{% if search_query %}{{search_query}}&{% end %}page={{pages['page_num'] + 1}}">&raquo;</a></li>
+            {% else %}
+                <li class="disabled"><a href="javascript:;">&raquo;</a></li>
+            {% end %}
+          </ul>
+        </nav>
+          {% end %}
+{% include footer.html %}

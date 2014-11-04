@@ -10,7 +10,7 @@ db = {
 }
 
 page = {
-    'size': 15
+    'size': 1
 }
 
 environment = {
@@ -19,4 +19,7 @@ environment = {
     3: "开发环境"
 }
 
-
+status = {
+    1: "运行中",
+    2: "已停运"
+}
