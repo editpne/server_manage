@@ -2,10 +2,11 @@
 {% include nav.html %}
         <style>
             .main-editor{margin-right: 0px;margin-left: 0px;padding:0px 15px 15px;margin:0 -15px 15px;position:relative;min-width: 350px;max-width: 800px;}
-
+            .col-sm-10{width:33%;}
+            .col-sm-2{padding-right:0px;}
         </style>
     <div class="page-header">
-          <h1>新增/编辑服务器 <small>New/Edit Server</small></h1>
+          <h1>新增服务器 <small>New Server</small></h1>
     </div>
         <div class="main-editor">
             <form class="form-horizontal" role="form">
@@ -14,9 +15,7 @@
                 <div class="col-sm-10">
                   <input type="email" class="form-control" id="inputEmail3">
                 </div>
-              </div>
-              <div class="form-group">
-                <label for="inputPassword3" class="col-sm-2 control-label">IP地址</label>
+                  <label for="inputPassword3" class="col-sm-2 control-label">IP地址</label>
                 <div class="col-sm-10">
                   <input type="password" class="form-control" id="inputPassword3">
                 </div>
@@ -26,9 +25,7 @@
                 <div class="col-sm-10">
                   <input type="password" class="form-control" >
                 </div>
-              </div>
-              <div class="form-group">
-                <label for="inputPassword3" class="col-sm-2 control-label">集群</label>
+                  <label for="inputPassword3" class="col-sm-2 control-label">集群</label>
                 <div class="col-sm-10">
                   <input type="password" class="form-control" >
                 </div>
@@ -41,7 +38,8 @@
                         中国电信
                         <span class="caret"></span>
                       </button>
-                      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                      <input type="hidden" name="isp" value="">
+                      <ul class="dropdown-menu dropdown-select" role="menu" aria-labelledby="dropdownMenu1">
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">中国电信</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">中国联通</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">中国移动</a></li>
@@ -49,23 +47,20 @@
                       </ul>
                     </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label for="inputPassword3" class="col-sm-2 control-label">IDC机房</label>
+                  <label for="inputPassword3" class="col-sm-2 control-label">IDC机房</label>
                 <div class="col-sm-10">
-
                   <div class="dropdown">
                       <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown">
                         兆维机房
                         <span class="caret"></span>
                       </button>
-                      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
+                      <input type="hidden" name="idc" value="">
+                      <ul class="dropdown-menu dropdown-select" role="menu" aria-labelledby="dropdownMenu2">
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">兆维机房</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">电信通</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">酒仙桥</a></li>
                       </ul>
                     </div>
-
                 </div>
               </div>
               <div class="form-group">
@@ -76,24 +71,23 @@
                         生产环境
                         <span class="caret"></span>
                       </button>
-                      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu3">
+                      <input type="hidden" name="environment" value="">
+                      <ul class="dropdown-menu dropdown-select" role="menu" aria-labelledby="dropdownMenu3">
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">生产环境</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">测试环境</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">开发环境</a></li>
                       </ul>
                     </div>
                 </div>
-              </div>
-
-              <div class="form-group">
-                <label for="inputPassword3" class="col-sm-2 control-label">角色</label>
+                  <label for="inputPassword3" class="col-sm-2 control-label">角色</label>
                 <div class="col-sm-10">
                   <div class="dropdown">
                       <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu4" data-toggle="dropdown">
                         生产环境
                         <span class="caret"></span>
                       </button>
-                      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu4">
+                      <input type="hidden" name="role" value="">
+                      <ul class="dropdown-menu dropdown-select" role="menu" aria-labelledby="dropdownMenu4">
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">生产环境</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">测试环境</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">开发环境</a></li>
@@ -101,7 +95,6 @@
                     </div>
                 </div>
               </div>
-
               <div class="form-group">
                 <label for="inputPassword3" class="col-sm-2 control-label">业务</label>
                 <div class="col-sm-10">
@@ -110,23 +103,23 @@
                         业主论坛
                         <span class="caret"></span>
                       </button>
-                      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu5">
+                      <input type="hidden" name="business" value="">
+                      <ul class="dropdown-menu dropdown-select" role="menu" aria-labelledby="dropdownMenu5">
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">业主论坛</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">楼盘</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">家居</a></li>
                       </ul>
                     </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label for="inputPassword3" class="col-sm-2 control-label">应用</label>
+                  <label for="inputPassword3" class="col-sm-2 control-label">应用</label>
                 <div class="col-sm-10">
                   <div class="dropdown">
                       <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu6" data-toggle="dropdown">
                         nginx前端
                         <span class="caret"></span>
                       </button>
-                      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu6">
+                      <input type="hidden" name="application" value="">
+                      <ul class="dropdown-menu dropdown-select" role="menu" aria-labelledby="dropdownMenu6">
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">nginx前端</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">mysql数据库</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">PHP-FPM</a></li>
@@ -137,19 +130,16 @@
               <div class="form-group">
                 <label for="inputPassword3" class="col-sm-2 control-label">状态</label>
                 <div class="col-sm-10">
-                    <label class="radio-inline"><input type="radio" name="status"> 运行中</label>
+                    <label class="radio-inline"><input type="radio" name="status" checked="checked"> 运行中</label>
                     <label class="radio-inline"><input type="radio" name="status"> 已停运</label>
                 </div>
               </div>
               <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                  <button type="submit" class="btn btn-default">确认</button>
-                    <button type="submit" class="btn btn-default">取消</button>
+                    <button type="submit" class="btn btn-default">确认</button>
+                    <button type="reset" class="btn btn-default">取消</button>
                 </div>
               </div>
             </form>
         </div>
-
-
-
 {% include footer.html %}

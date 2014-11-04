@@ -33,6 +33,14 @@
                     parentButton.append(' <span class="caret"></span>');
                     $("#search_param").attr("name", $(this).attr("data-value"))
                 });
+
+                $(".dropdown-menu.dropdown-menu-right li a").on("click",function(){
+                    var parentButton = $(this).parents(".dropdown-menu.dropdown-menu-right").prev("button");
+                    parentButton.html($(this).html());
+                    parentButton.append(' <span class="caret"></span>');
+                    $("#search_param").attr("name", $(this).attr("data-value"))
+                });
+
             });
         </script>
     </head>
