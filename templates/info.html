@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        body{padding:0 100 0 100;}
+        textarea{width:300px;}
+        .text{width:300px;}
+
+    </style>
+</head>
+<body>
+<form action="/info/{{item.get('id',0)}}/" method="POST" >
+<table>
+    <tr>
+        <td>名称</td>
+        <td><input class="text" name="name" type="text" value="{{item.get('name','')}}"></td>
+    </tr>
+    <tr>
+        <td>内网IP</td>
+        <td><input class="text" name="internal_ip_addr" type="text" value="{{item.get('internal_ip_addr','')}}"></td>
+    </tr>
+    <tr>
+        <td>外网IP</td>
+        <td><input class="text" name="outside_ip_addr" type="text" value="{{item.get('outside_ip_addr','')}}"></td>
+    </tr>
+    <tr>
+        <td>所属业务</td>
+        <td>
+            <select name="category_id">
+                {%for k,v in cats.iteritems()%}
+                <option value="{{k}}" {%if item.get('cat_id',1) == k%}selected{%end%}>{{v}}</option>
+                {%end%}
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>服务类型</td>
+        <td>
+            <select name="type_id">
+                {%for k,v in types.iteritems()%}
+                <option value="{{k}}" {%if item.get('type_id',1) == k%}selected{%end%}>{{v}}</option>
+                {%end%}
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>是否虚拟机</td>
+        <td>
+            <input type="radio" name="virtual" value="1" {%if item.get('virtual',0) == 1 %}checked{%end%} /> 是
+            <input type="radio" name="virtual" value="0" {%if item.get('virtual',0) == 0 %}checked{%end%} /> 否
+        </td>
+    </tr>
+    <tr>
+        <td>状态</td>
+        <td>
+            <input type="radio" name="status" value="1" {%if item.get('status',0) == 1 %}checked{%end%} /> 正常
+            <input type="radio" name="status" value="0" {%if item.get('status',0) == 0 %}checked{%end%} /> 关闭
+        </td>
+    </tr>
+    <tr>
+        <td>备注</td>
+        <td>
+            <textarea name="note">{{item.get('note','')}}</textarea>
+        </td>
+    </tr>
+    <tr>
+        <td>排序</td>
+        <td><input class="text" name="sort_order" type="text" value="{{item.get('sort_order',0)}}"></td>
+    </tr>
+    <tr>
+        <td colspan="2" align="center">
+            <input type="submit" value="确认">
+            <input type="reset" value="取消">
+        </td>
+    </tr>
+
+</table>
+</form>
+
+</body>
+</html>
