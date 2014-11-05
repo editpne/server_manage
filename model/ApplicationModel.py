@@ -11,3 +11,14 @@ def get_all():
         for item in lists:
             output[item.id] = item
     return output
+
+
+def get_one(application_id):
+    if isinstance(application_id, int) is False:
+        try:
+            application_id = int(application_id)
+        except ValueError:
+            return False
+    if application_id == 0:
+        return False
+    return DB.query(Application).filter(Application.id == application_id).scalar()

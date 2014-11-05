@@ -38,6 +38,7 @@ class Servers(Base):
     head_name = Column(String(35), default='')
     status = Column(Integer, default=0)
     sort_order = Column(Integer, default=100)
+    user_id = Column(Integer, default=0)
 
 
 class Isp(Base):

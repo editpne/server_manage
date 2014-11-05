@@ -105,3 +105,10 @@ def get_list(page_num, page_size, **filters):
     lists = _DB.limit(page_size).offset(limit)
 
     return lists
+
+
+def create(**data_param):
+    _DB = Servers(**data_param)
+    DB.add(_DB)
+    DB.commit()
+    return _DB

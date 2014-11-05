@@ -20,8 +20,10 @@ class Application(tornado.web.Application):
             (r"/", servers.IndexHandler),
             (r"/server/", servers.IndexHandler),
             (r"/server/add/", servers.AddHandler),
+            (r"/server/remove/", servers.RemoveHandler)
         ]
         self.config = config
+        self.user_id = 1
         settings = {
             "static_path": os.path.join(os.path.dirname(__file__), "static"),
             "template_path": os.path.join(os.path.dirname(__file__), "templates")

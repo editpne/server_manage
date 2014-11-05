@@ -11,3 +11,14 @@ def get_all():
         for item in lists:
             output[item.id] = item
     return output
+
+
+def get_one(idc_id):
+    if isinstance(idc_id, int) is False:
+        try:
+            idc_id = int(idc_id)
+        except ValueError:
+            return False
+    if idc_id == 0:
+        return False
+    return DB.query(Idc.id).filter(Idc.id == idc_id).scalar()
