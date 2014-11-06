@@ -19,7 +19,7 @@
             .col-sm-2{padding-right:0px;}
         </style>
     <div class="page-header">
-          <h1>新增服务器 <small>New Server</small></h1>
+          <h1>{% if server_info.id %}编辑服务器 <small>Edit Server</small>{% else %}新增服务器 <small>New Server</small> {% end %} </h1>
     </div>
         <div class="main-editor">
             <form class="form-horizontal" role="form" action="/server/add/" method="post">

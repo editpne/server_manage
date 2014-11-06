@@ -10,7 +10,7 @@ db = {
 }
 
 page = {
-    'size': 1
+    'size': 14
 }
 
 environment = {
@@ -23,3 +23,5 @@ status = {
     1: "运行中",
     2: "已停运"
 }
+
+user_passwd_key = '61oETzKXQAKaYdkL5gEmHeJJFaYh7Ecnp2XdiP1o/Vo='

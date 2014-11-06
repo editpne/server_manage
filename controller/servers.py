@@ -11,6 +11,7 @@ import json
 
 
 class IndexHandler(tornado.web.RequestHandler):
+    
     def get(self):
         page_num = self.get_argument('page', 1)
         page_num = int(page_num)
@@ -60,6 +61,10 @@ class IndexHandler(tornado.web.RequestHandler):
                 "name": "编号"
             },
             {
+                "key": "action",
+                "name": "操作"
+            },
+            {
                 "key": "name",
                 "name": "名称"
             },
@@ -103,10 +108,7 @@ class IndexHandler(tornado.web.RequestHandler):
                 "key": "status",
                 "name": "状态"
             },
-            {
-                "key": "action",
-                "name": "操作"
-            }
+
         ]
 
         choose_filters = dict()

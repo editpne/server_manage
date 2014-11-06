@@ -30,7 +30,9 @@
             {% else %}
               <tr>
             {% end %}
+
                  <td>{{item.id}}</td>
+               <td><a href="/server/{{item.id}}/" class="editor-item glyphicon glyphicon-cog"></a>  <a href="javascript:;" data-href="/server/remove/?id={{item.id}}" class="remove-item glyphicon glyphicon-remove"></a></td>
                  <td>{{item.name}}</td>
                  <td>{{item.ip_addr}}</td>
                  <td>{% if list_choose.get("isp") and list_choose["isp"].get(item.isp_id) %}{{list_choose["isp"][item.isp_id]}}{% else %}-{% end %}</td>
@@ -42,7 +44,7 @@
                  <td>{% if list_choose.get("role") and list_choose["role"].get(item.role) %}{{list_choose["role"][item.role]}}{% else %}-{% end %}</td>
                  <td>{{item.head_name}}</td>
                  <td>{% if list_choose.get("status") and list_choose["status"].get(item.status) %}{{list_choose["status"][item.status]}}{% else %}-{% end %}</td>
-                 <td><a href="/server/{{item.id}}/" class="editor-item glyphicon glyphicon-cog"></a>  <a href="javascript:;" data-href="/server/remove/?id={{item.id}}" class="remove-item glyphicon glyphicon-remove"></a></td>
+
               </tr>
            {% end %}
            </tbody>
@@ -87,8 +89,5 @@
                     }
                 });
             });
-
-
-
         </script>
 {% include footer.html %}
