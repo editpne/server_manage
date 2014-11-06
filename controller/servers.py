@@ -137,7 +137,7 @@ class IndexHandler(tornado.web.RequestHandler):
 
         choose_filters["environment"] = choose_filters["role"] = self.application.config.environment
         choose_filters["status"] = self.application.config.status
-        print filters
+
         lists = ServersModel.get_list(page_num, page_size, **filters)
         _count = ServersModel.get_count(**filters)
 
@@ -152,35 +152,65 @@ class IndexHandler(tornado.web.RequestHandler):
 
 class AddHandler(tornado.web.RequestHandler):
     def get(self):
+        server_id = self.get_argument('id', False)
         choose_filters = dict()
+        default_choose = dict()
+        if server_id is not False:
+            try:
+                server_id = int(server_id)
+            except ValueError:
+                server_id = False
+
+        if server_id is not False:
+            server_info = ServersModel.get_one(server_id)
+            if not server_info:
+                return self.write('参数错误')
+        else:
+            server_info = ServersModel.get_object()
+
         isp_options = {}
         isp_list = IspModel.get_all()
         for isp_k, isp_v in isp_list.iteritems():
+            if not server_info.isp_id:
+                server_info.isp_id = isp_k
             isp_options[isp_k] = isp_v.name
         choose_filters["isp"] = isp_options
 
         idc_options = {}
         idc_list = IdcModel.get_all()
         for idc_k, idc_v in idc_list.iteritems():
+            if not server_info.idc_id:
+                server_info.idc_id = idc_k
             idc_options[idc_k] = idc_v.name
         choose_filters["idc"] = idc_options
 
         business_options = {}
         business_list = BusinessModel.get_all()
         for b_k, b_v in business_list.iteritems():
+            if not server_info.business_id:
+                server_info.business_id = b_k
             business_options[b_k] = b_v.name
         choose_filters["business"] = business_options
 
         application_options = {}
         app_list = ApplicationModel.get_all()
         for a_k, a_v in app_list.iteritems():
+            if not server_info.application_id:
+                server_info.application_id = a_k
             application_options[a_k] = a_v.name
         choose_filters["application"] = application_options
+
+        if not server_info.environment:
+            server_info.environment = 1
+        if not server_info.role:
+            server_info.role = 1
+        if not server_info.status:
+            server_info.status = 1
 
         choose_filters["environment"] = choose_filters["role"] = self.application.config.environment
         choose_filters["status"] = self.application.config.status
 
-        self.render("info.html", list_choose=choose_filters)
+        self.render("info.html", list_choose=choose_filters, default_choose=default_choose, server_info=server_info)
 
     def post(self):
         """python POST提交上的默认是unicode类型, int()类型转化必须是数字的,否则报错. 所以使用try except来处理.
@@ -191,6 +221,7 @@ class AddHandler(tornado.web.RequestHandler):
         _ip_addr = self.get_argument('ip_addr', False)
         _head_name = self.get_argument('head_name', False)
         _cluster = self.get_argument('cluster', False)
+        _id = self.get_argument('id', False)
 
         if not _name or not _ip_addr or not _head_name or not _cluster:
             return self.write('输入框参数不齐, 请重新填写')
@@ -254,11 +285,22 @@ class AddHandler(tornado.web.RequestHandler):
             "status": _status,
             "user_id": self.application.user_id
         }
-        server = ServersModel.create(**data_param)
-        if server.id > 0:
-            self.redirect('/')
+        if not _id:
+            server = ServersModel.create(**data_param)
+            if server.id > 0:
+                self.redirect('/')
+            else:
+                return self.write('数据插入失败, 请重试或联系管理员.5076')
         else:
-            return self.write('数据插入失败, 请重试或联系管理员.5076')
+            try:
+                _id = int(_id)
+            except ValueError:
+                return self.write('错误的ID')
+            server = ServersModel.update(_id, **data_param)
+            if server:
+                self.redirect('/')
+            else:
+                return self.write('更新失败, 请重试或联系管理员.5076')
 
 
 class RemoveHandler(tornado.web.RequestHandler):
@@ -273,8 +315,9 @@ class RemoveHandler(tornado.web.RequestHandler):
             return self.write(json.dumps(_output))
 
         server = ServersModel.remove(_id)
-        if server.id == 0:
+        if server == 1:
             return self.write(json.dumps(_output))
+
 
 
 

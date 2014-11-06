@@ -3,8 +3,12 @@
 from database import DB, Servers
 
 
-def get(id):
-    pass
+def get_one(server_id):
+    return DB.query(Servers).filter(Servers.id == server_id).first()
+
+
+def get_object():
+    return Servers()
 
 
 def get_count(**filters):
@@ -112,3 +116,43 @@ def create(**data_param):
     DB.add(_DB)
     DB.commit()
     return _DB
+
+
+def remove(server_id):
+    _DB = DB.query(Servers).filter(Servers.id == server_id).delete()
+    DB.commit()
+    return _DB
+
+
+def update(server_id, **data_param):
+    #_DB = Servers(**data_param)
+    update_data = {}
+    if data_param.get("name"):
+        update_data['name'] = data_param['name']
+    if data_param.get("ip_addr"):
+        update_data['ip_addr'] = data_param['ip_addr']
+    if data_param.get("isp_id"):
+        update_data['isp_id'] = data_param['isp_id']
+    if data_param.get("idc_id"):
+        update_data['idc_id'] = data_param['idc_id']
+    if data_param.get("environment"):
+        update_data['environment'] = data_param['environment']
+    if data_param.get("business_id"):
+        update_data['business_id'] = data_param['business_id']
+    if data_param.get("application_id"):
+        update_data['application_id'] = data_param['application_id']
+    if data_param.get("cluster"):
+        update_data['cluster'] = data_param['cluster']
+    if data_param.get("role"):
+        update_data['role'] = data_param['role']
+    if data_param.get("head_name"):
+        update_data['head_name'] = data_param['head_name']
+    if data_param.get("status"):
+        update_data['status'] = data_param['status']
+    if not update_data:
+        return False
+    _DB = DB.query(Servers).filter(Servers.id == server_id).update(update_data)
+    DB.commit()
+    return _DB
+
+
