@@ -18,10 +18,9 @@ class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
             (r"/", servers.IndexHandler),
-            (r"/server/", servers.IndexHandler),
+            (r"/server/(\d+)/", servers.AddHandler),
             (r"/server/add/", servers.AddHandler),
             (r"/server/remove/", servers.RemoveHandler),
-            (r"/server/info/", servers.AddHandler)
         ]
         self.config = config
         self.user_id = 1
@@ -29,6 +28,7 @@ class Application(tornado.web.Application):
             "static_path": os.path.join(os.path.dirname(__file__), "static"),
             "template_path": os.path.join(os.path.dirname(__file__), "templates"),
             "cookie_secret": "61oETzKXQAKaYdkL5gEmHeJJFaYh7Ecnp2XdiP1o/Vo=",
+            "login_url": "/login",
         }
         tornado.web.Application.__init__(self, handlers, debug=True, **settings)
 

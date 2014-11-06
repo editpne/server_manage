@@ -151,8 +151,9 @@ class IndexHandler(tornado.web.RequestHandler):
 
 
 class AddHandler(tornado.web.RequestHandler):
-    def get(self):
-        server_id = self.get_argument('id', False)
+    def get(self, server_id=0):
+        if server_id == 0:
+            server_id = self.get_argument('id', False)
         choose_filters = dict()
         default_choose = dict()
         if server_id is not False:
@@ -161,7 +162,7 @@ class AddHandler(tornado.web.RequestHandler):
             except ValueError:
                 server_id = False
 
-        if server_id is not False:
+        if server_id:
             server_info = ServersModel.get_one(server_id)
             if not server_info:
                 return self.write('参数错误')
