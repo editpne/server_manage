@@ -1,0 +1,84 @@
+{% include ../header.html %}
+{% include ../nav.html %}
+
+        <div class="page-header">
+          <h1>业务列表 <small>Business List</small></h1>
+        </div>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">新增</button>
+        <button type="button" class="btn btn-danger" onclick="window.history.back();">取消</button>
+
+        <table class="table table-striped table-hover table-bordered" style="margin-top: 10px;">
+           <thead>
+              <tr>
+                  <th style="width: 6%">操作</th>
+                  <th style="width: 6%">编号</th>
+                  <th>名称</th>
+              </tr>
+           </thead>
+           <tbody>
+                <tr>
+                    <td><a href="javascript:;" class="editor-item glyphicon glyphicon-cog"></a>  <a href="javascript:;" data-href="" class="remove-item glyphicon glyphicon-remove"></a></td>
+                    <td>1</td>
+                    <td>WEB</td>
+                </tr>
+           </tbody>
+        </table>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">新增项</h4>
+      </div>
+      <div class="modal-body">
+        <label class="col-sm-2 control-label">名称</label> <input type="text" name="name" class="form-control">
+      </div>
+      <div class="modal-footer">
+          <span id="iMessage">提示信息</span>
+        <button type="button" class="btn btn-primary" id="AddBtn">确 定</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">取 消</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+        <script>
+            $(function(){
+                $("#AddBtn").on('click',function(){
+                    var name = $("#myModal input").val();
+                    if (name.length == 0) {
+                        $("#iMessage").html('请输入名称');
+                        return;
+                    }
+                    var $btn = $(this).button('loading');
+                    var innerHtml = '<tr>';
+                    innerHtml += '<td><a href="javascript:;" class="editor-item glyphicon glyphicon-cog"></a>  <a href="javascript:;" data-href="" class="remove-item glyphicon glyphicon-remove"></a></td>';
+                    innerHtml += '<td>1</td>';
+                    innerHtml += '<td>WEB</td>';
+                    innerHtml += '</tr>';
+
+                    $("table tbody").prepend(innerHtml);
+                    $('#myModal').modal('hide')
+                    $btn.button("reset");
+                    return
+                    $.post("/business/add/",{"name":name},function(data){
+                        if (data.status != 1){
+                            $("#iMessage").html(data.message);
+                            $btn.button("reset");
+                        }else{
+                            var innerHtml = '<td><a href="javascript:;" class="editor-item glyphicon glyphicon-cog"></a>  <a href="javascript:;" data-href="" class="remove-item glyphicon glyphicon-remove"></a></td>';
+                            innerHtml += '<td>1</td>';
+                            innerHtml += '<td>WEB</td>';
+                            $("table tbody").prepend(innerHtml);
+                            $("#myModal").hide();
+                        }
+                    },'json');
+                });
+            });
+
+        </script>
+
+{% include ../footer.html %}

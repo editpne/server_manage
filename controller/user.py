@@ -1,20 +1,22 @@
 #coding=utf-8
 __author__ = 'zhenguoyu'
 
-import tornado.web
+import base
 import json
 import hashlib
 from model import UserModel
 
 
-class LoginHandler(tornado.web.RequestHandler):
+class LoginHandler(base.BaseHandler):
     def get(self):
         """
         User login template
         :return:
         """
+        if self.current_user:
+            self.redirect('/')
+
         self.render('login.html')
-        pass
 
     def post(self):
         """
@@ -22,25 +24,37 @@ class LoginHandler(tornado.web.RequestHandler):
         :return:
         """
         output = {"status": 0, "message": ""}
-        user_name = self.get_argument('username')
+        uname = self.get_argument('uname')
         passwd = self.get_argument('passwd')
-
-        user_info = UserModel.get_one_by_uname(user_name)
+        user_info = UserModel.get_one_by_uname(uname)
         if not user_info:
             output["status"] = 1201
             output["message"] = '用户不存在'
             return self.write(json.dumps(output))
         _passwd = hashlib.md5(passwd).hexdigest()
+
+        user_info.passwd = str(user_info.passwd)
+        _passwd = str(_passwd)
         if user_info.passwd != _passwd:
             output["status"] = 1202
             output["message"] = '密码错误'
             return self.write(json.dumps(output))
-        self.set_secure_cookie("uname", user_name)
-        self.set_secure_cookie("uid", user_info.id)
-        self.redirect('/')
+        passport = {"UNAME": uname, "UID": user_info.id, "UREALNAME": user_info.real_name}
+        passport = json.dumps(passport)
+        self.set_secure_cookie("UPASS", passport)
+        output['status'] = 1
+        output["message"] = "登陆成功"
+        output['redirect'] = '/'
+        return self.write(json.dumps(output))
 
 
-class RegisterHandler(tornado.web.RequestHandler):
+class LogoutHandler(base.BaseHandler):
+    def get(self):
+        self.set_secure_cookie('UPASS', '')
+        self.redirect('/login/')
+
+
+class RegisterHandler(base.BaseHandler):
     def get(self):
         pass
 

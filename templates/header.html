@@ -25,16 +25,5 @@
             .page-header h1{font-size:30px;}
             li{display: block;}
         </style>
-        <script>
-            $(function(){
-                $(".dropdown-menu.dropdown-menu-right li a").on("click",function(){
-                    var parentButton = $(this).parents(".dropdown-menu.dropdown-menu-right").prev("button");
-                    parentButton.html($(this).html());
-                    parentButton.append(' <span class="caret"></span>');
-                    $("#search_param").attr("name", $(this).attr("data-value"))
-                });
-
-            });
-        </script>
     </head>
 <body>

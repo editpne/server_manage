@@ -22,6 +22,9 @@ class Application(tornado.web.Application):
             (r"/server/add/", servers.AddHandler),
             (r"/server/remove/", servers.RemoveHandler),
             (r"/login/", user.LoginHandler),
+            (r"/logout/", user.LogoutHandler),
+            (r"/business/", business.IndexHandler),
+            (r"/business/add/", business.AddHandler),
         ]
         self.config = config
         self.user_id = 1

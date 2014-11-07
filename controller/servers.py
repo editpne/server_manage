@@ -2,6 +2,7 @@
 __author__ = 'zhenguoyu'
 
 import tornado.web
+import base
 from model import ServersModel, IspModel, IdcModel, BusinessModel, ApplicationModel
 import json
 
@@ -10,8 +11,8 @@ import json
 """
 
 
-class IndexHandler(tornado.web.RequestHandler):
-    
+class IndexHandler(base.BaseHandler):
+    @tornado.web.authenticated
     def get(self):
         page_num = self.get_argument('page', 1)
         page_num = int(page_num)
@@ -149,10 +150,11 @@ class IndexHandler(tornado.web.RequestHandler):
             "page_num": page_num
         }
 
-        self.render("index.html", search_param=search_param, search_query=_search_filter_query, table_colum=table_colum, lists=lists, list_choose=choose_filters, pages=pages)
+        self.render("index.html", user=self.current_user, search_param=search_param, search_query=_search_filter_query, table_colum=table_colum, lists=lists, list_choose=choose_filters, pages=pages)
 
 
-class AddHandler(tornado.web.RequestHandler):
+class AddHandler(base.BaseHandler):
+    @tornado.web.authenticated
     def get(self, server_id=0):
         if server_id == 0:
             server_id = self.get_argument('id', False)
@@ -213,8 +215,9 @@ class AddHandler(tornado.web.RequestHandler):
         choose_filters["environment"] = choose_filters["role"] = self.application.config.environment
         choose_filters["status"] = self.application.config.status
 
-        self.render("info.html", list_choose=choose_filters, default_choose=default_choose, server_info=server_info)
+        self.render("info.html", user=self.current_user, list_choose=choose_filters, default_choose=default_choose, server_info=server_info)
 
+    @tornado.web.authenticated
     def post(self):
         """python POST提交上的默认是unicode类型, int()类型转化必须是数字的,否则报错. 所以使用try except来处理.
 
@@ -306,7 +309,8 @@ class AddHandler(tornado.web.RequestHandler):
                 return self.write('更新失败, 请重试或联系管理员.5076')
 
 
-class RemoveHandler(tornado.web.RequestHandler):
+class RemoveHandler(base.BaseHandler):
+    @tornado.web.authenticated
     def get(self):
         _output = {"status": 1, "message": ""}
         _id = self.get_argument('id', 0)

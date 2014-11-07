@@ -1,23 +1,23 @@
 {% include header.html %}
 {% include nav.html %}
 
-        <script>
-            $(function(){
-                $(".dropdown-select li a ").on('click',function(){
-                    var parentUI = $(this).parents(".dropdown-select");
-                    var v = $(this).attr("data-value");
-                    var txt = $(this).html();
-                    parentUI.prev("input").val(v);
-                    parentUI.prevAll("button").html(txt);
-                    parentUI.prevAll("button").append(' <span class="caret"></span>');
-                });
+    <script>
+        $(function(){
+            $(".dropdown-select li a ").on('click',function(){
+                var parentUI = $(this).parents(".dropdown-select");
+                var v = $(this).attr("data-value");
+                var txt = $(this).html();
+                parentUI.prev("input").val(v);
+                parentUI.prevAll("button").html(txt);
+                parentUI.prevAll("button").append(' <span class="caret"></span>');
             });
-        </script>
-        <style>
-            .main-editor{margin-right: 0px;margin-left: 0px;padding:0px 15px 15px;margin:0 -15px 15px;position:relative;min-width: 350px;max-width: 800px;}
-            .col-sm-10{width:33%;}
-            .col-sm-2{padding-right:0px;}
-        </style>
+        });
+    </script>
+    <style>
+        .main-editor{margin-right: 0px;margin-left: 0px;padding:0px 15px 15px;margin:0 -15px 15px;position:relative;min-width: 350px;max-width: 800px;}
+        .col-sm-10{width:33%;}
+        .col-sm-2{padding-right:0px;}
+    </style>
     <div class="page-header">
           <h1>{% if server_info.id %}编辑服务器 <small>Edit Server</small>{% else %}新增服务器 <small>New Server</small> {% end %} </h1>
     </div>
