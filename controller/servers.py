@@ -128,8 +128,8 @@ class IndexHandler(base.BaseHandler):
 
         business_options = {}
         business_list = BusinessModel.get_all()
-        for b_k, b_v in business_list.iteritems():
-            business_options[b_k] = b_v.name
+        for b_item in business_list:
+            business_options[b_item.id] = b_item.name
         choose_filters["business"] = business_options
 
         application_options = {}
@@ -191,10 +191,10 @@ class AddHandler(base.BaseHandler):
 
         business_options = {}
         business_list = BusinessModel.get_all()
-        for b_k, b_v in business_list.iteritems():
+        for b_item in business_list:
             if not server_info.business_id:
-                server_info.business_id = b_k
-            business_options[b_k] = b_v.name
+                server_info.business_id = b_item.id
+            business_options[b_item.id] = b_item.name
         choose_filters["business"] = business_options
 
         application_options = {}

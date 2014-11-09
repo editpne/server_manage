@@ -11,7 +11,7 @@ import config
 from controller import servers, app, business, setting, user
 
 from tornado.options import define, options
-define("port", default=8000, type=int)
+define("port", default=8081, type=int)
 
 
 class Application(tornado.web.Application):
@@ -25,6 +25,10 @@ class Application(tornado.web.Application):
             (r"/logout/", user.LogoutHandler),
             (r"/business/", business.IndexHandler),
             (r"/business/add/", business.AddHandler),
+            (r"/business/remove/", business.RemoveHandler),
+            (r"/user/", user.IndexHandler),
+            (r"/user/add/", user.AddHandler),
+            (r"/user/remove/", user.RemoveHandler),
         ]
         self.config = config
         self.user_id = 1

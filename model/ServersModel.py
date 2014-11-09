@@ -156,3 +156,7 @@ def update(server_id, **data_param):
     return _DB
 
 
+def get_by_business(business_id):
+    return DB.query(Servers).filter(Servers.business_id == business_id).all()
+
+

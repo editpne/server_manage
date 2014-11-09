@@ -63,6 +63,7 @@ class Users(Base):
     passwd = Column(String(32), default='')
     real_name = Column(String(35), default='')
     role = Column(Integer, default=0)
+    status = Column(Integer, default=1)
 
 
 engine = create_engine('mysql+mysqldb://%s:%s@%s:%s/%s?charset=%s' % (config.db['user'], config.db['passwd'], config.db['host'], config.db['port'], config.db['dbname'], config.db['charset']))

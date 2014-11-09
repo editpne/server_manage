@@ -83,6 +83,8 @@
                                 item.parents("tr").fadeOut("slow",function(){
                                     item.parents("tr").remove();
                                 });
+                            }else{
+                                alert(data.message);
                             }
                         },'json');
                     }
