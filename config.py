@@ -14,9 +14,9 @@ page = {
 }
 
 environment = {
-    1: "生产环境",
-    2: "测试环境",
-    3: "开发环境"
+    1: "PRODUCTION",
+    2: "TEST",
+    3: "DEVELOP"
 }
 
 status = {

@@ -1,7 +1,8 @@
 {% include header.html %}
 <style>
     .login-form{padding: 100px 38% 0px 38%;}
-
+            .form-control{width:60%;}
+            .col-sm-2{width:12%;}
 </style>
 <div class="login-form">
 <form class="form-horizontal" role="form" action="/login/" method="POST">
@@ -71,8 +72,49 @@
                             }
                         },500);
                     }
-                },'json')
+                },'json');
 
+            });
+
+
+
+            $(document).keypress(function(e){
+                if (e.keyCode == 13){
+                    $("#TipsMessage").hide();
+                    var $btn = $(this).button('loading');
+                    var uname = $("#uname").val();
+                    var passwd = $("#passwd").val();
+                    if (uname == ''){
+                        $("#TipsMessage").html('请输入账号');
+                        $("#TipsMessage").show();
+                        $btn.button('reset')
+                        return;
+                    }
+                     if (passwd == ''){
+                        $("#TipsMessage").html('请输入密码');
+                        $("#TipsMessage").show();
+                        $btn.button('reset')
+                        return;
+                    }
+                    $.post('/login/',{"uname": uname, "passwd": passwd},function(data){
+                        if (data.status != 1){
+                            setTimeout(function(){
+                                $btn.button('reset');
+                                $("#TipsMessage").html(data.message);
+                                $("#TipsMessage").show();
+                            }, 1000);
+
+                        }else{
+                            setTimeout(function(){
+                                if (data.redirect != ''){
+                                    window.location.href = data.redirect;
+                                }else{
+                                    window.location.href = '/';
+                                }
+                            },500);
+                        }
+                    },'json');
+                }
             });
         });
     </script>

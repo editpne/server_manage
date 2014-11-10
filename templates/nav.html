@@ -37,10 +37,11 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">其他工具 <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="/user/">用户管理</a></li>
+                        <li><a href="/idc/">IDC管理</a></li>
+                        <li><a href="/isp/">ISP管理</a></li>
+                        <li><a href="/app/">应用管理</a></li>
                         <li class="divider"></li>
-                        <li><a href="#">机房管理</a></li>
-                        <li><a href="#">运营商管理</a></li>
+                        <li><a href="/user/">用户管理</a></li>
                   </ul>
                 </li>
             </ul>
@@ -65,10 +66,10 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">操作 <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">修改密码</a></li>
-                        <li><a href="#">我的资料</a></li>
+                        <li><a href="javascript:;" class="resetPasswd">修改密码</a></li>
+                        <li><a href="javascript:;" onclick="alert('暂未开放');">我的资料</a></li>
                         <li class="divider"></li>
-                        <li><a href="#">系统通知</a></li>
+                        <li><a href="javascript:;" onclick="alert('暂未开放');">系统通知</a></li>
                         <li><a href="/logout/">退出</a></li>
                   </ul>
                 </li>
@@ -76,3 +77,71 @@
         </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
+
+<div class="modal fade" id="resetPasswd" tabindex="-1" role="dialog" aria-labelledby="resetPasswdLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" >修改密码</h4>
+      </div>
+      <div class="modal-body">
+        <label class="col-sm-2 control-label">原密码:</label> <input type="password" name="y_passwd" class="form-control">
+      </div>
+
+      <div class="modal-body">
+        <label class="col-sm-2 control-label">新密码:</label> <input type="password" name="n_passwd" class="form-control">
+      </div>
+
+      <div class="modal-body">
+        <label class="col-sm-2 control-label">密码确认:</label> <input type="password" name="q_passwd" class="form-control">
+      </div>
+
+      <div class="modal-footer">
+        <span id="iMessage"></span>
+        <button type="button" class="btn btn-primary" id="resetPasswdBtn">确 定</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">取 消</button>
+      </div>
+    </div>
+  </div>
+</div>
+        <script>
+            $(function(){
+                $(".resetPasswd").on('click',function(){
+                    $("#resetPasswd :password").val('');
+                    $('#resetPasswd').modal('show');
+                });
+
+                $("#resetPasswdBtn").on('click',function(){
+                    var passwd_1 = $(":password[name='y_passwd']").val();
+                    var passwd_2 = $(":password[name='n_passwd']").val();
+                    var passwd_3 = $(":password[name='q_passwd']").val();
+                    if (passwd_1.length == 0) {
+                        $("#iMessage").html('请填写原始密码');
+                        return false;
+                    }
+                    if (passwd_2.length == 0 || passwd_3.length == 0){
+                        $("#iMessage").html('请填写新密码');
+                        return false;
+                    }
+                    if (passwd_2 != passwd_3){
+                        $("#iMessage").html('两次密码不一致');
+                        return false;
+                    }
+                    var $btn = $(this).button('loading');
+                    $.post('/user/resetpasswd/',{"passwd":passwd_1, "new_passwd": passwd_2, "confirm_passwd": passwd_3},function(data){
+                        if (data.status == 1){
+                            $("#iMessage").html('修改成功');
+                            setTimeout(function(){
+                               $('#resetPasswd').modal('hide');
+                               $btn.button("reset");
+                            },500);
+                        }else{
+                            $("#iMessage").html(data.message);
+                            return false;
+                        }
+                    },'json');
+                });
+            });
+
+        </script>

@@ -1,7 +1,7 @@
 {% include ../header.html %}
 {% include ../nav.html %}
         <div class="page-header">
-          <h1>业务列表 <small>Business List</small></h1>
+          <h1>IDC列表 <small>IDC List</small></h1>
         </div>
         <button type="button" class="btn btn-primary addItem" >新增</button>
         <button type="button" class="btn btn-danger" onclick="window.history.back();">取消</button>
@@ -18,7 +18,7 @@
            <tbody>
                 {% for item in lists %}
                 <tr class="item-{{item.id}}">
-                    <td><a href="javascript:;" class="editor-item glyphicon glyphicon-cog" data-value="{{item.id}}"></a>  <a href="javascript:;" data-href="/business/remove/" class="remove-item glyphicon glyphicon-remove" data-value="{{item.id}}" ></a></td>
+                    <td><a href="javascript:;" class="editor-item glyphicon glyphicon-cog" data-value="{{item.id}}"></a>  <a href="javascript:;" data-href="/idc/remove/" class="remove-item glyphicon glyphicon-remove" data-value="{{item.id}}" ></a></td>
                     <td>{{item.id}}</td>
                     <td>{{item.name}}</td>
                 </tr>
@@ -100,7 +100,7 @@
                     }
 
                     var $btn = $(this).button('loading');
-                    $.post("/business/add/",{"name":name, "business_id": item_id},function(data){
+                    $.post("/idc/add/",{"name":name, "idc_id": item_id},function(data){
                         if (data.status != 1){
                             $("#iMessage").html(data.message);
                             $btn.button("reset");
@@ -108,8 +108,8 @@
                             setTimeout(function(){
                               if (item_id == 0){
                                   var innerHtml = '<tr class="item-'+data.data.business_id+'">';
-                                  innerHtml += '<td><a href="javascript:;" class="editor-item glyphicon glyphicon-cog" data-value="'+data.data.business_id+'"></a>  <a href="javascript:;" data-href="/business/remove/" class="remove-item glyphicon glyphicon-remove" data-value="'+data.data.business_id+'"></a></td>';
-                                  innerHtml += '<td>'+data.data.business_id+'</td>';
+                                  innerHtml += '<td><a href="javascript:;" class="editor-item glyphicon glyphicon-cog" data-value="'+data.data.idc_id+'"></a>  <a href="javascript:;" data-href="/idc/remove/" class="remove-item glyphicon glyphicon-remove" data-value="'+data.data.idc_id+'"></a></td>';
+                                  innerHtml += '<td>'+data.data.idc_id+'</td>';
                                   innerHtml += '<td>'+name+'</td>';
                                   innerHtml += '</tr>';
                                   $("table tbody").prepend(innerHtml);

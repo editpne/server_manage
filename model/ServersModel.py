@@ -105,6 +105,7 @@ def get_list(page_num, page_size, **filters):
         _cluster = filters["cluster"]
         _DB = _DB.filter(Servers.cluster.like(_cluster+'%'))
 
+    _DB = _DB.order_by(Servers.id.desc())
     limit = page_size * (page_num - 1)
     lists = _DB.limit(page_size).offset(limit)
 
@@ -158,5 +159,16 @@ def update(server_id, **data_param):
 
 def get_by_business(business_id):
     return DB.query(Servers).filter(Servers.business_id == business_id).all()
+
+
+def get_by_app(app_id):
+    return DB.query(Servers).filter(Servers.application_id == app_id).all()
+
+def get_by_isp(isp_id):
+    return DB.query(Servers).filter(Servers.isp_id == isp_id).all()
+
+
+def get_by_idc(idc_id):
+    return DB.query(Servers).filter(Servers.idc_id == idc_id).all()
 
 

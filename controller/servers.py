@@ -58,12 +58,12 @@ class IndexHandler(base.BaseHandler):
 
         table_colum = [
             {
-                "key": "id",
-                "name": "编号"
-            },
-            {
                 "key": "action",
                 "name": "操作"
+            },
+			{
+                "key": "id",
+                "name": "编号"
             },
             {
                 "key": "name",
@@ -116,14 +116,14 @@ class IndexHandler(base.BaseHandler):
 
         isp_options = {}
         isp_list = IspModel.get_all()
-        for isp_k, isp_v in isp_list.iteritems():
-            isp_options[isp_k] = isp_v.name
+        for i_item in isp_list:
+            isp_options[i_item.id] = i_item.name
         choose_filters["isp"] = isp_options
 
         idc_options = {}
         idc_list = IdcModel.get_all()
-        for idc_k, idc_v in idc_list.iteritems():
-            idc_options[idc_k] = idc_v.name
+        for i_item in idc_list:
+            idc_options[i_item.id] = i_item.name
         choose_filters["idc"] = idc_options
 
         business_options = {}
@@ -134,8 +134,8 @@ class IndexHandler(base.BaseHandler):
 
         application_options = {}
         app_list = ApplicationModel.get_all()
-        for a_k, a_v in app_list.iteritems():
-            application_options[a_k] = a_v.name
+        for a_item in app_list:
+            application_options[a_item.id] = a_item.name
         choose_filters["application"] = application_options
 
         choose_filters["environment"] = choose_filters["role"] = self.application.config.environment
@@ -175,18 +175,18 @@ class AddHandler(base.BaseHandler):
 
         isp_options = {}
         isp_list = IspModel.get_all()
-        for isp_k, isp_v in isp_list.iteritems():
+        for a_item in isp_list:
             if not server_info.isp_id:
-                server_info.isp_id = isp_k
-            isp_options[isp_k] = isp_v.name
+                server_info.isp_id = a_item.id
+            isp_options[a_item.id] = a_item.name
         choose_filters["isp"] = isp_options
 
         idc_options = {}
         idc_list = IdcModel.get_all()
-        for idc_k, idc_v in idc_list.iteritems():
+        for a_item in idc_list:
             if not server_info.idc_id:
-                server_info.idc_id = idc_k
-            idc_options[idc_k] = idc_v.name
+                server_info.idc_id = a_item.id
+            idc_options[a_item.id] = a_item.name
         choose_filters["idc"] = idc_options
 
         business_options = {}
@@ -199,10 +199,10 @@ class AddHandler(base.BaseHandler):
 
         application_options = {}
         app_list = ApplicationModel.get_all()
-        for a_k, a_v in app_list.iteritems():
+        for a_item in app_list:
             if not server_info.application_id:
-                server_info.application_id = a_k
-            application_options[a_k] = a_v.name
+                server_info.application_id = a_item.id
+            application_options[a_item.id] = a_item.name
         choose_filters["application"] = application_options
 
         if not server_info.environment:

@@ -30,8 +30,8 @@
             {% else %}
               <tr>
             {% end %}
-                 <td>{{item.id}}</td>
                <td><a href="/server/{{item.id}}/" class="editor-item glyphicon glyphicon-cog"></a>  <a href="javascript:;" data-href="/server/remove/?id={{item.id}}" class="remove-item glyphicon glyphicon-remove"></a></td>
+               <td>{{item.id}}</td>
                  <td>{{item.name}}</td>
                  <td>{{item.ip_addr}}</td>
                  <td>{% if list_choose.get("isp") and list_choose["isp"].get(item.isp_id) %}{{list_choose["isp"][item.isp_id]}}{% else %}-{% end %}</td>

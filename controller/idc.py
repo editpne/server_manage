@@ -3,15 +3,15 @@
 import tornado.web
 import base
 import json
-from model import ApplicationModel, ServersModel
+from model import IdcModel, ServersModel
 
 
 class IndexHandler(base.BaseHandler):
 
     @tornado.web.authenticated
     def get(self):
-        lists = ApplicationModel.get_all()
-        self.render('app/index.html', user=self.current_user, lists=lists)
+        lists = IdcModel.get_all()
+        self.render('idc/index.html', user=self.current_user, lists=lists)
 
 
 class AddHandler(base.BaseHandler):
@@ -19,33 +19,30 @@ class AddHandler(base.BaseHandler):
     @tornado.web.authenticated
     def post(self):
         _name = self.get_argument('name', '')
-        _app_id = self.get_argument('app_id', 0)
+        _idc_id = self.get_argument('idc_id', 0)
         output = {"status": 0, "message": ''}
         if len(_name) == 0:
             output["status"] = "1105"
             output["message"] = "名称不能为空"
             return self.write(json.dumps(output))
         try:
-            _app_id = int(_app_id)
+            _idc_id = int(_idc_id)
         except ValueError:
-            _app_id = 0
+            _idc_id = 0
 
-        if _app_id != 0:
-            result = ApplicationModel.update(_app_id, name=_name)
-            print 1
-            print result
+        if _idc_id != 0:
+            result = IdcModel.update(_idc_id, name=_name)
             if result:
                 output["status"] = 1
                 output["message"] = "成功"
                 return self.write(json.dumps(output))
         else:
-            result = ApplicationModel.create(name=_name)
-            print result
+            result = IdcModel.create(name=_name)
             if result.id > 0:
                 output["status"] = 1
                 output["message"] = "成功"
                 output["data"] = {}
-                output["data"]["app_id"] = result.id
+                output["data"]["idc_id"] = result.id
                 return self.write(json.dumps(output))
         output["status"] = 1205
         output["message"] = "失败"
@@ -66,13 +63,13 @@ class RemoveHandler(base.BaseHandler):
             output["status"] = 1101
             output["message"] = "参数ID错误"
             return self.write(json.dumps(output))
-        servers = ServersModel.get_by_app(_id)
+        servers = ServersModel.get_by_idc(_id)
         if len(servers) > 0:
             output["status"] = 1301
             output["message"] = "不能删除该项，请检查服务器。"
             return self.write(json.dumps(output))
 
-        result = ApplicationModel.remove(_id)
+        result = IdcModel.remove(_id)
         print type(result)
         if result:
             output["status"] = 1

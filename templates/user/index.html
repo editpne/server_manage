@@ -71,6 +71,7 @@
                     $("#myModal :input[type='password']").val('');
                     $("#myModal :input[type='hidden']").val('');
                     $("#myModal :radio").first().attr("checked","checked");
+                    $("#myModal #unameID").removeAttr("disabled");
                     $('#myModal').modal('show');
                 });
             });
@@ -109,6 +110,7 @@
                       _status = 1;
                     }
                     $("#myModal #unameID").val(uname);
+                    $("#myModal #unameID").attr("disabled","");
                     $("#myModal #realNameID").val(real_name);
                     $("#myModal #itemID").val(item_id);
                     if ($("input[name='status']:checked").val() != _status){

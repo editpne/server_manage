@@ -8,10 +8,10 @@ import tornado.web
 import os.path
 import config
 
-from controller import servers, app, business, setting, user
+from controller import servers, app, business, idc, isp, user
 
 from tornado.options import define, options
-define("port", default=8081, type=int)
+define("port", default=8000, type=int)
 
 
 class Application(tornado.web.Application):
@@ -26,9 +26,19 @@ class Application(tornado.web.Application):
             (r"/business/", business.IndexHandler),
             (r"/business/add/", business.AddHandler),
             (r"/business/remove/", business.RemoveHandler),
+            (r"/app/", app.IndexHandler),
+            (r"/app/add/", app.AddHandler),
+            (r"/app/remove/", app.RemoveHandler),
+            (r"/idc/", idc.IndexHandler),
+            (r"/idc/add/", idc.AddHandler),
+            (r"/idc/remove/", idc.RemoveHandler),
+            (r"/isp/", isp.IndexHandler),
+            (r"/isp/add/", isp.AddHandler),
+            (r"/isp/remove/", isp.RemoveHandler),
             (r"/user/", user.IndexHandler),
             (r"/user/add/", user.AddHandler),
             (r"/user/remove/", user.RemoveHandler),
+            (r"/user/resetpasswd/", user.ResetpasswdHandler),
         ]
         self.config = config
         self.user_id = 1

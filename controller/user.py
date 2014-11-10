@@ -186,3 +186,45 @@ class RemoveHandler(base.BaseHandler):
             output["status"] = 1101
             output["message"] = "参数ID错误"
         return self.write(json.dumps(output))
+
+
+class ResetpasswdHandler(base.BaseHandler):
+
+    @tornado.web.authenticated
+    def post(self):
+        _passwd = self.get_argument('passwd', False)
+        _new_passwd = self.get_argument('new_passwd', False)
+        _confirm_passwd = self.get_argument('confirm_passwd', False)
+        output = {"status": 0, "message": ""}
+        if not _passwd or not _new_passwd or not _confirm_passwd:
+            output["status"] = 1101
+            output["message"] = "参数不完整"
+            return self.write(json.dumps(output))
+        if _confirm_passwd != _new_passwd:
+            output["status"] = 1102
+            output["message"] = "两次密码不一致"
+            return self.write(json.dumps(output))
+
+        users = self.current_user
+        uid = users["uid"]
+        _passwd = hashlib.md5(_passwd).hexdigest()
+        user_info = UserModel.get_one(uid)
+        if not user_info:
+            output["status"] = 1104
+            output["message"] = "该用户不存在"
+            return self.write(json.dumps(output))
+        if user_info.passwd != _passwd:
+            output["status"] = 1105
+            output["message"] = "原密码错误, 不允许修改"
+            return self.write(json.dumps(output))
+
+        _new_passwd = hashlib.md5(_new_passwd).hexdigest()
+        result = UserModel.update(uid, passwd=_new_passwd)
+        if result:
+            output["status"] = 1
+            output["message"] = "SUCCESS"
+            return self.write(json.dumps(output))
+        output["status"] = 1103
+        output["message"] = "异常错误"
+        return self.write(json.dumps(output))
+
