@@ -1,9 +1,9 @@
 #coding=utf-8
 
 db = {
-    'host': 'localhost',
-    'user': 'root',
-    'passwd': '123456',
+    'host': '10.10.90.186',
+    'user': 'fdbuser',
+    'passwd': 'Wslm:11Wps',
     'dbname': 'focus_server_manage',
     'port': 3306,
     'charset': 'UTF8',
@@ -20,8 +20,8 @@ environment = {
 }
 
 status = {
-    1: "运行中",
-    2: "已停运"
+    1: "ACTIVE",
+    2: "CLOSE"
 }
 
 user_passwd_key = '61oETzKXQAKaYdkL5gEmHeJJFaYh7Ecnp2XdiP1o/Vo='

@@ -276,6 +276,8 @@ class AddHandler(base.BaseHandler):
                 return self.write("错误的IP地址2")
             if _ip >= 255 or _ip < 0:
                 return self.write("错误的IP地址2")
+		
+        uid = 1
 
         data_param = {
             "name": _name,
@@ -289,8 +291,9 @@ class AddHandler(base.BaseHandler):
             "business_id": _business_id,
             "application_id": _application_id,
             "status": _status,
-            "user_id": self.application.user_id
+            "user_id": uid
         }
+
         if not _id:
             server = ServersModel.create(**data_param)
             if server.id > 0:

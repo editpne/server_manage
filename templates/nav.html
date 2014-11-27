@@ -138,6 +138,7 @@
                             },500);
                         }else{
                             $("#iMessage").html(data.message);
+                            $btn.button("reset");
                             return false;
                         }
                     },'json');
